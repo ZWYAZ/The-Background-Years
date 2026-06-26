@@ -88,6 +88,19 @@ button {
   text-transform: uppercase;
 }
 
+.brand-kicker {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.brand-kicker span + span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
 h1,
 h2,
 h3,
