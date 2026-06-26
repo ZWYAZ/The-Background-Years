@@ -10,7 +10,7 @@ const phases = [
 ];
 
 const state = {
-  birthYear: 1990,
+  birthYear: 2000,
   phase: "all",
   categories: new Set(),
   decades: new Set()
@@ -68,7 +68,7 @@ function eventDecade(event) {
 
 function clampBirthYear(value) {
   const year = Number.parseInt(value, 10);
-  if (Number.isNaN(year)) return 1990;
+  if (Number.isNaN(year)) return 2000;
   return Math.min(CURRENT_YEAR, Math.max(1900, year));
 }
 
