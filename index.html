@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>时间底片</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" aria-label="年份索引">
+        <div class="brand-block">
+          <p class="kicker">时间底片</p>
+          <h1>以出生年份为起点，回溯个体成长所置身的历史情境</h1>
+        </div>
+
+        <form class="year-form" id="yearForm">
+          <label for="birthYear">出生年份</label>
+          <div class="year-entry">
+            <input
+              id="birthYear"
+              name="birthYear"
+              type="number"
+              min="1900"
+              max="2026"
+              step="1"
+              value="1990"
+              inputmode="numeric"
+            />
+            <button type="submit">冲洗底片</button>
+          </div>
+        </form>
+
+        <div class="range-control">
+          <label for="yearRange">快速滑动</label>
+          <input id="yearRange" type="range" min="1900" max="2026" value="1990" />
+        </div>
+
+        <div class="summary-grid" aria-live="polite">
+          <div>
+            <span class="summary-label">出生</span>
+            <strong id="summaryBirth">1990</strong>
+          </div>
+          <div>
+            <span class="summary-label">截至</span>
+            <strong>2026</strong>
+          </div>
+          <div>
+            <span class="summary-label">已收录</span>
+            <strong id="summaryCount">0</strong>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-heading">类别</div>
+          <div class="chip-grid" id="categoryFilters"></div>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-heading">十年段</div>
+          <div class="chip-grid compact" id="decadeFilters"></div>
+        </div>
+      </section>
+
+      <section class="timeline-panel" aria-label="时代事件">
+        <div class="panel-topline">
+          <div>
+            <h2 id="profileTitle">1990 年出生者的时间底片</h2>
+          </div>
+          <button class="ghost-button" id="resetFilters" type="button">重置筛选</button>
+        </div>
+
+        <section class="phase-overview" aria-label="生命阶段背景">
+          <div class="section-heading">
+            <h3>阶段背景</h3>
+            <span class="stage-note">注：生命阶段划分采用世界卫生组织（WHO）标准，儿童0-17岁，青年18-44岁，中年45-59岁，老年60岁及以上。</span>
+          </div>
+          <div class="phase-overview-grid" id="phaseOverview"></div>
+        </section>
+
+        <div class="timeline-filter-heading">年龄阶段</div>
+        <div class="phase-tabs" id="phaseTabs" role="tablist" aria-label="年龄阶段"></div>
+
+        <ol class="event-list" id="eventList"></ol>
+        <div class="empty-state" id="emptyState" hidden>
+          当前筛选下没有事件。调整类别或十年段后可继续查看。
+        </div>
+      </section>
+    </main>
+
+    <div class="annotation-tools" aria-label="页面标注工具">
+      <button id="annotationToggle" type="button">标注模式</button>
+      <button id="annotationCopy" type="button">复制标注</button>
+      <button id="annotationClear" type="button">清除</button>
+    </div>
+    <div class="annotation-layer" id="annotationLayer" aria-hidden="true"></div>
+
+    <script src="./events.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
