@@ -42,16 +42,7 @@ const el = {
   decadeFilters: document.querySelector("#decadeFilters"),
   phaseOverview: document.querySelector("#phaseOverview"),
   phaseTabs: document.querySelector("#phaseTabs"),
-  resetFilters: document.querySelector("#resetFilters"),
-  annotationToggle: document.querySelector("#annotationToggle"),
-  annotationCopy: document.querySelector("#annotationCopy"),
-  annotationClear: document.querySelector("#annotationClear"),
-  annotationLayer: document.querySelector("#annotationLayer")
-};
-
-const annotationState = {
-  active: false,
-  items: []
+  resetFilters: document.querySelector("#resetFilters")
 };
 
 function uniqueSorted(values) {
@@ -266,14 +257,6 @@ function toggleSetValue(set, value) {
   }
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
-
 el.form.addEventListener("submit", (event) => {
   event.preventDefault();
   state.birthYear = clampBirthYear(el.birthYear.value);
@@ -316,72 +299,6 @@ el.resetFilters.addEventListener("click", () => {
   state.categories.clear();
   state.decades.clear();
   renderEvents();
-});
-
-function renderAnnotations() {
-  el.annotationLayer.innerHTML = annotationState.items
-    .map(
-      (item) => `
-        <div class="annotation-marker" style="left:${item.x}px; top:${item.y}px;">
-          <span>${item.id}</span>
-          <textarea data-annotation-id="${item.id}" placeholder="写下这里要怎么改">${escapeHtml(item.note)}</textarea>
-        </div>
-      `
-    )
-    .join("");
-}
-
-function setAnnotationMode(active) {
-  annotationState.active = active;
-  document.body.classList.toggle("is-annotating", active);
-  el.annotationLayer.setAttribute("aria-hidden", String(!active));
-  el.annotationToggle.textContent = active ? "退出标注" : "标注模式";
-}
-
-el.annotationToggle.addEventListener("click", () => {
-  setAnnotationMode(!annotationState.active);
-});
-
-el.annotationClear.addEventListener("click", () => {
-  annotationState.items = [];
-  renderAnnotations();
-});
-
-el.annotationCopy.addEventListener("click", async () => {
-  const text =
-    annotationState.items
-      .map((item) => `${item.id}. x:${Math.round(item.x)}, y:${Math.round(item.y)} - ${item.note || "未填写"}`)
-      .join("\n") || "暂无标注";
-
-  try {
-    await navigator.clipboard.writeText(text);
-    el.annotationCopy.textContent = "已复制";
-    window.setTimeout(() => {
-      el.annotationCopy.textContent = "复制标注";
-    }, 1200);
-  } catch {
-    window.prompt("复制这些标注", text);
-  }
-});
-
-el.annotationLayer.addEventListener("click", (event) => {
-  if (!annotationState.active || event.target.closest(".annotation-marker")) return;
-
-  annotationState.items.push({
-    id: annotationState.items.length + 1,
-    x: event.pageX,
-    y: event.pageY,
-    note: ""
-  });
-  renderAnnotations();
-});
-
-el.annotationLayer.addEventListener("input", (event) => {
-  const noteField = event.target.closest("[data-annotation-id]");
-  if (!noteField) return;
-
-  const item = annotationState.items.find((annotation) => annotation.id === Number(noteField.dataset.annotationId));
-  if (item) item.note = noteField.value;
 });
 
 renderEvents();
