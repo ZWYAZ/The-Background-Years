@@ -116,6 +116,13 @@ h1 {
   letter-spacing: 0;
 }
 
+.brand-note {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
 .intro {
   margin-bottom: 0;
   color: var(--muted);
